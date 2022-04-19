@@ -1,0 +1,61 @@
+syntax="proto3";
+
+package article;
+
+import "google/protobuf/empty.proto";
+
+
+option go_package = "github.com/ulascansenturk/grpc-go/genpb";
+
+
+message Article{
+
+  int32 id = 1;  // Unique ID number for this person.
+  string name = 2;
+  string description = 3;
+  string author = 4;
+  Status status  =5;
+  }
+
+  enum Status {
+    DRAFT = 0;
+    PUBLISHED = 1;
+    ARCHIVED = 2;
+  }
+
+  message ArticleList {
+    repeated Article articles = 1;
+
+  }
+
+    message GetArticleRequest {
+        string name = 1;
+        string description = 2;
+        string author = 3;
+        Status status = 4;
+    }
+
+    message GetArticleListRequest {
+        repeated GetArticleRequest articles = 1;
+    }
+
+
+    message GetArticleResponse {
+        Article article = 1;
+    }
+
+message DeleteArticleRequest{
+   int32 id = 1;
+}
+
+  service ArticleService {
+    rpc CreateArticle(Article) returns (Article){}
+    rpc DeleteArticle(DeleteArticleRequest) returns (google.protobuf.Empty){}
+    rpc GetArticle(GetArticleRequest) returns (GetArticleResponse) {}
+    rpc GetArticleList(GetArticleListRequest) returns (ArticleList){}
+  }
+
+
+
+
+
